@@ -1,24 +1,22 @@
 import styled from "styled-components";
-import { headerContainer, headerContent } from "../styles/colors";
-import { headerPadding } from "../styles/spacing";
+import { TitleBase } from "./baseComponents";
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding: ${headerPadding}px;
-  background-color: ${headerContainer};
+  padding: ${(props) => props.theme.spacing.headerPadding}px;
+  background-color: ${(props) => props.theme.colors.headerContainer};
 `;
 
 const HeaderIcon = styled.div`
-  width: ${headerPadding}px;
-  height: ${headerPadding}px;
-  background-color: ${headerContent};
+  width: ${(props) => props.theme.spacing.headerPadding}px;
+  height: ${(props) => props.theme.spacing.headerPadding}px;
+  background-color: ${(props) => props.theme.colors.headerContent};
 `;
 
-const HeaderTitle = styled.div`
-  line-height: 32px;
-  font-size: 26px;
-  color: ${headerContent};
+const HeaderTitle = styled(TitleBase)`
+  color: ${(props) => props.theme.colors.headerContent};
+  margin-left: ${(props) => props.theme.spacing.headerContentSpacing}px;
 `;
 
 const Header = () => {
