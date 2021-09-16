@@ -1,5 +1,6 @@
+import React from "react";
 import styled from "styled-components";
-import { TitleBase } from "./baseComponents";
+import TitleBase from "./baseComponents";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -19,13 +20,11 @@ const HeaderTitle = styled(TitleBase)`
   margin-left: ${(props) => props.theme.spacing.headerContentSpacing}px;
 `;
 
-const Header = () => {
-  return (
-    <HeaderContainer>
-      <HeaderIcon />
-      <HeaderTitle>Software</HeaderTitle>
-    </HeaderContainer>
-  );
-};
+const Header = () => (
+  <HeaderContainer>
+    <HeaderIcon />
+    <HeaderTitle>Software</HeaderTitle>
+  </HeaderContainer>
+);
 
 export default Header;

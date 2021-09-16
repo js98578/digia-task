@@ -1,7 +1,7 @@
-import { ThemeProvider } from "styled-components";
+import React from "react";
+import styled, { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Participants from "./components/Participants";
-import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +13,10 @@ const theme = {
   colors: {
     headerContainer: "#adb5bd",
     headerContent: "#FFFFFF",
-    darkGrey: '#757575',
+    darkGrey: "#757575",
+    grey: "#eeeeee",
+    participantsContent: "#fffff",
+    listItemIconColor: "#909090",
   },
   spacing: {
     headerPadding: 32,
@@ -21,6 +24,11 @@ const theme = {
     titleLineHeight: 32,
     titleFontSize: 26,
     bodyWidth: 912,
+    editableLinePadding: 16,
+    listItemIconSize: 24,
+    emailWidth: 180,
+    phoneWidth: 150,
+    nameWidth: 150,
   },
 };
 
