@@ -11,9 +11,14 @@ const Editable = styled.input.attrs(() => ({
   height: 40px;
   background-color: #fafafa;
   width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
   &:focus {
     outline: none;
   }
+  -moz-box-sizing: border-box; /* Firefox */
+  -webkit-box-sizing: border-box; /* Safari, Chrome */
+  box-sizing: border-box; /* ie, opera */
 `;
 
 const EditableField = ({ value, onChange, placeholder }) => (
