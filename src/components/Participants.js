@@ -36,11 +36,37 @@ const Participants = () => {
     setParticipants(participantsArray);
   }, []);
 
+  const onSave = (newParticipant) => {
+    setParticipants((prevState) => {
+      const indexOfParticipant = prevState.findIndex(
+        (participant) => participant.id === newParticipant.id
+      );
+      const newListOfParticipants = prevState.map((participant, index) => {
+        if (index === indexOfParticipant) {
+          return newParticipant;
+        }
+        return participant;
+      });
+      return newListOfParticipants;
+    });
+  };
+
+  const removeParticipant = (id) => {
+    setParticipants((prevState) => {
+      const newListOfParticipants = prevState.filter((x) => x.id !== id);
+      return newListOfParticipants;
+    });
+  };
+
   return (
     <Container>
       <Title>List of participants</Title>
       <NewParticipant />
-      <ParticipantList participants={participants} />
+      <ParticipantList
+        participants={participants}
+        onSave={onSave}
+        remove={removeParticipant}
+      />
     </Container>
   );
 };

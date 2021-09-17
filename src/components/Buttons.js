@@ -32,6 +32,7 @@ SaveButton.propTypes = {
 const CancelButtonContainer = styled(ButtonContainerBase)`
   background-color: #ededed;
   color: #0077ff;
+  margin-right: 10px;
 `;
 
 export const CancelButton = ({ onClick }) => (

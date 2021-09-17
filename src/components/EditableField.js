@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Editable = styled.input.attrs(() => ({
   type: "text",
@@ -15,6 +16,13 @@ const Editable = styled.input.attrs(() => ({
   }
 `;
 
-const EditableField = () => <Editable />;
+const EditableField = ({ value, onChange }) => (
+  <Editable value={value} onChange={onChange} />
+);
+
+EditableField.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+};
 
 export default EditableField;

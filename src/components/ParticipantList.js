@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { ReactComponent as EditIcon } from "../icons/edit_black_24dp.svg";
@@ -83,29 +83,62 @@ const PhoneFieldContainer = styled(FieldContainerBase)`
   width: ${(props) => props.theme.spacing.phoneWidth}px;
 `;
 
-// const ParticipantListItemButtonsContainer = styled.div``;
+const ParticipantListItemEdit = ({ participant, onSave, cancelEdit }) => {
+  const [participantEditState, setParticipantEditState] = useState({});
 
-const ParticipantListItem = ({ participant }) => {
+  const onEditChange = (value, field) => {
+    setParticipantEditState((prevState) => ({ ...prevState, [field]: value }));
+  };
+
+  useEffect(() => {
+    setParticipantEditState(participant);
+  }, []);
+
+  return (
+    <ParticipantListItemContainer>
+      <ParticipantListItemEditContainer>
+        <NameFieldContainer edit>
+          <EditableField
+            value={participantEditState.name}
+            onChange={(event) => onEditChange(event.target.value, "name")}
+          />
+        </NameFieldContainer>
+        <EmailFieldContainer edit>
+          <EditableField
+            value={participantEditState.email}
+            onChange={(event) => onEditChange(event.target.value, "email")}
+          />
+        </EmailFieldContainer>
+        <PhoneFieldContainer edit>
+          <EditableField
+            value={participantEditState.phone}
+            onChange={(event) => onEditChange(event.target.value, "phone")}
+          />
+        </PhoneFieldContainer>
+      </ParticipantListItemEditContainer>
+      <ParticipantListItemIconsContainer>
+        <CancelButton onClick={() => cancelEdit()} />
+        <SaveButton
+          onClick={() => {
+            onSave(participantEditState);
+            cancelEdit();
+          }}
+        />
+      </ParticipantListItemIconsContainer>
+    </ParticipantListItemContainer>
+  );
+};
+
+const ParticipantListItem = ({ participant, onSave, remove }) => {
   const [edit, setEdit] = useState(false);
+
   if (edit) {
     return (
-      <ParticipantListItemContainer>
-        <ParticipantListItemEditContainer>
-          <NameFieldContainer edit>
-            <EditableField />
-          </NameFieldContainer>
-          <EmailFieldContainer edit>
-            <EditableField />
-          </EmailFieldContainer>
-          <PhoneFieldContainer edit>
-            <EditableField />
-          </PhoneFieldContainer>
-        </ParticipantListItemEditContainer>
-        <ParticipantListItemIconsContainer>
-          <CancelButton onClick={() => setEdit(!edit)} />
-          <SaveButton />
-        </ParticipantListItemIconsContainer>
-      </ParticipantListItemContainer>
+      <ParticipantListItemEdit
+        participant={participant}
+        onSave={onSave}
+        cancelEdit={() => setEdit(!edit)}
+      />
     );
   }
   return (
@@ -123,26 +156,41 @@ const ParticipantListItem = ({ participant }) => {
       </ParticipantListItemInfoContainer>
       <ParticipantListItemIconsContainer>
         <StyledEditIcon onClick={() => setEdit(!edit)} />
-        <StyledDeleteIcon />
+        <StyledDeleteIcon onClick={() => remove(participant.id)} />
       </ParticipantListItemIconsContainer>
     </ParticipantListItemContainer>
   );
 };
 
-const ParticipantList = ({ participants }) => (
+const ParticipantList = ({ participants, onSave, remove }) => (
   <ParticipantListContainer>
     {participants.map((participant) => (
-      <ParticipantListItem key={participant.id} participant={participant} />
+      <ParticipantListItem
+        key={participant.id}
+        participant={participant}
+        onSave={onSave}
+        remove={remove}
+      />
     ))}
   </ParticipantListContainer>
 );
 
 ParticipantList.propTypes = {
   participants: PropTypes.arrayOf(PropTypes.object),
+  onSave: PropTypes.func,
+  remove: PropTypes.func,
 };
 
 ParticipantListItem.propTypes = {
   participant: PropTypes.object,
+  onSave: PropTypes.func,
+  remove: PropTypes.func,
+};
+
+ParticipantListItemEdit.propTypes = {
+  onSave: PropTypes.func,
+  participant: PropTypes.object,
+  cancelEdit: PropTypes.func,
 };
 
 export default ParticipantList;
