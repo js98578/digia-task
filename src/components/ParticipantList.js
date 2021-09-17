@@ -23,6 +23,7 @@ const StyledDeleteIcon = styled(DeleteIcon)`
 
 const ParticipantListContainer = styled.div`
   background-color: white;
+  margin-bottom: 50px;
 `;
 
 const InfoText = styled.div`
@@ -178,23 +179,42 @@ const ColumnName = styled.div`
   cursor: pointer;
 `;
 
+const SortingIndicator = styled.div`
+  margin-left: 5px;
+`;
+
+const SortingIndicatorAscending = () => <SortingIndicator>↓</SortingIndicator>;
+const SortingIndicatorDescending = () => <SortingIndicator>↑</SortingIndicator>;
+
+const COLUMN_NAMES = {
+  name: "Name",
+  email: "Email",
+  phone: "Phone",
+};
+
+const ColumnNameComponent = ({ sort, sortedBy, field }) => (
+  <>
+    <ColumnName onClick={() => sort(field)}>{COLUMN_NAMES[field]}</ColumnName>
+    {sortedBy.sortedByField === field && sortedBy.ascending && (
+      <SortingIndicatorAscending />
+    )}
+    {sortedBy.sortedByField === field && !sortedBy.ascending && (
+      <SortingIndicatorDescending />
+    )}
+  </>
+);
+
 const ParticipantList = ({ participants, onSave, remove, sort, sortedBy }) => (
   <ParticipantListContainer>
     <ColumnNamesContainer>
       <NameFieldContainer>
-        <ColumnName onClick={() => sort("name")}>Name</ColumnName>
-        {sortedBy.sortedByField === "name" && sortedBy.ascending && "↓"}
-        {sortedBy.sortedByField === "name" && !sortedBy.ascending && "↑"}
+        <ColumnNameComponent sort={sort} sortedBy={sortedBy} field={"name"} />
       </NameFieldContainer>
       <EmailFieldContainer>
-        <ColumnName onClick={() => sort("email")}>E-mail address</ColumnName>
-        {sortedBy.sortedByField === "email" && sortedBy.ascending && "↓"}
-        {sortedBy.sortedByField === "email" && !sortedBy.ascending && "↑"}
+        <ColumnNameComponent sort={sort} sortedBy={sortedBy} field={"email"} />
       </EmailFieldContainer>
       <PhoneFieldContainer>
-        <ColumnName onClick={() => sort("phone")}>Phone number</ColumnName>
-        {sortedBy.sortedByField === "phone" && sortedBy.ascending && "↓"}
-        {sortedBy.sortedByField === "phone" && !sortedBy.ascending && "↑"}
+        <ColumnNameComponent sort={sort} sortedBy={sortedBy} field={"phone"} />
       </PhoneFieldContainer>
     </ColumnNamesContainer>
     {participants.map((participant) => (
@@ -226,6 +246,12 @@ ParticipantListItemEdit.propTypes = {
   onSave: PropTypes.func,
   participant: PropTypes.object,
   cancelEdit: PropTypes.func,
+};
+
+ColumnNameComponent.propTypes = {
+  field: PropTypes.string,
+  sort: PropTypes.func,
+  sortedBy: PropTypes.object,
 };
 
 export default ParticipantList;
