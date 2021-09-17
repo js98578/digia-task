@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { ReactComponent as EditIcon } from "../icons/edit_black_24dp.svg";
@@ -32,7 +32,7 @@ const InfoText = styled.div`
   font-weight: 400;
 `;
 
-const ParticipantListItemContainer = styled.div`
+export const ParticipantListItemContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -47,7 +47,7 @@ const ParticipantListItemInfoContainer = styled.div`
   padding-bottom: 24px;
 `;
 
-const ParticipantListItemEditContainer = styled.div`
+export const ParticipantListItemEditContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding-left: 16px;
@@ -55,7 +55,7 @@ const ParticipantListItemEditContainer = styled.div`
   padding-bottom: 16px;
 `;
 
-const ParticipantListItemIconsContainer = styled.div`
+export const ParticipantListItemIconsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -71,28 +71,28 @@ const FieldContainerBase = styled.div`
   ${(props) => props.edit && "padding-right: 16px;"}
 `;
 
-const NameFieldContainer = styled(FieldContainerBase)`
+export const NameFieldContainer = styled(FieldContainerBase)`
   width: ${(props) => props.theme.spacing.nameWidth}px;
 `;
 
-const EmailFieldContainer = styled(FieldContainerBase)`
+export const EmailFieldContainer = styled(FieldContainerBase)`
   width: ${(props) => props.theme.spacing.emailWidth}px;
 `;
 
-const PhoneFieldContainer = styled(FieldContainerBase)`
+export const PhoneFieldContainer = styled(FieldContainerBase)`
   width: ${(props) => props.theme.spacing.phoneWidth}px;
 `;
 
 const ParticipantListItemEdit = ({ participant, onSave, cancelEdit }) => {
-  const [participantEditState, setParticipantEditState] = useState({});
+  const [participantEditState, setParticipantEditState] = useState(participant);
 
   const onEditChange = (value, field) => {
     setParticipantEditState((prevState) => ({ ...prevState, [field]: value }));
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     setParticipantEditState(participant);
-  }, []);
+  }, []); */
 
   return (
     <ParticipantListItemContainer>
@@ -162,8 +162,35 @@ const ParticipantListItem = ({ participant, onSave, remove }) => {
   );
 };
 
+const ColumnNamesContainer = styled.div`
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  height: 48px;
+  align-items: center;
+  padding-left: 24px;
+`;
+
+const ColumnName = styled.div`
+  color: #757575;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+`;
+
 const ParticipantList = ({ participants, onSave, remove }) => (
   <ParticipantListContainer>
+    <ColumnNamesContainer>
+      <NameFieldContainer>
+        <ColumnName>Name</ColumnName>
+      </NameFieldContainer>
+      <EmailFieldContainer>
+        <ColumnName>E-mail address</ColumnName>
+      </EmailFieldContainer>
+      <PhoneFieldContainer>
+        <ColumnName>Phone number</ColumnName>
+      </PhoneFieldContainer>
+    </ColumnNamesContainer>
     {participants.map((participant) => (
       <ParticipantListItem
         key={participant.id}
@@ -179,6 +206,7 @@ ParticipantList.propTypes = {
   participants: PropTypes.arrayOf(PropTypes.object),
   onSave: PropTypes.func,
   remove: PropTypes.func,
+  sort: PropTypes.func,
 };
 
 ParticipantListItem.propTypes = {

@@ -16,13 +16,14 @@ const Editable = styled.input.attrs(() => ({
   }
 `;
 
-const EditableField = ({ value, onChange }) => (
-  <Editable value={value} onChange={onChange} />
+const EditableField = ({ value, onChange, placeholder }) => (
+  <Editable value={value} onChange={onChange} placeholder={placeholder} />
 );
 
 EditableField.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
+  placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default EditableField;

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { uniqueNamesGenerator, names } from "unique-names-generator";
+import validator from "validator";
 import { TitleBase } from "./baseComponents";
-import NewParticipant from "./NewParticipant";
 import ParticipantList from "./ParticipantList";
 import { getRandomEmail, getRandomPhoneNumber } from "../util/helperFunctions";
+import NewParticipant from "./NewParticipant";
 
 const nameGeneratorConfig = {
   dictionaries: [names],
@@ -36,7 +37,22 @@ const Participants = () => {
     setParticipants(participantsArray);
   }, []);
 
+  const validateParticipant = (participant) => {
+    const isEmail = validator.isEmail(participant.email.toString());
+    const isNumber = validator.isInt(participant.phone.toString());
+
+    if (isEmail && isNumber) {
+      return true;
+    }
+    // eslint-disable-next-line no-alert
+    alert("Problem on validation");
+    return false;
+  };
+
   const onSave = (newParticipant) => {
+    if (!validateParticipant(newParticipant)) {
+      return;
+    }
     setParticipants((prevState) => {
       const indexOfParticipant = prevState.findIndex(
         (participant) => participant.id === newParticipant.id
@@ -58,14 +74,27 @@ const Participants = () => {
     });
   };
 
+  const addNewParticipant = (participant) => {
+    // eslint-disable-next-line no-param-reassign
+    participant.id = uuidv4();
+    if (validateParticipant(participant)) {
+      setParticipants((prevState) => [...prevState, participant]);
+    }
+  };
+
+  const sort = (column) => {
+    console.log(column);
+  };
+
   return (
     <Container>
       <Title>List of participants</Title>
-      <NewParticipant />
+      <NewParticipant addNewParticipant={addNewParticipant} />
       <ParticipantList
         participants={participants}
         onSave={onSave}
         remove={removeParticipant}
+        sort={sort}
       />
     </Container>
   );
