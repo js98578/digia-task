@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import TitleBase from "./baseComponents";
+import { TitleBase } from "./baseComponents";
 
 const HeaderContainer = styled.div`
   display: flex;

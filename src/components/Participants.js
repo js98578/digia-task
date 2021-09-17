@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { uniqueNamesGenerator, names } from "unique-names-generator";
-import TitleBase from "./baseComponents";
+import { TitleBase } from "./baseComponents";
 import NewParticipant from "./NewParticipant";
 import ParticipantList from "./ParticipantList";
 import { getRandomEmail, getRandomPhoneNumber } from "../util/helperFunctions";
@@ -33,7 +33,6 @@ const Participants = () => {
       email: getRandomEmail(),
       phone: getRandomPhoneNumber(),
     }));
-    console.log("participants", participantsArray);
     setParticipants(participantsArray);
   }, []);
 

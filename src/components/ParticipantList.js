@@ -3,6 +3,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { ReactComponent as EditIcon } from "../icons/edit_black_24dp.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete_black_24dp.svg";
+import { CancelButton, SaveButton } from "./Buttons";
+import EditableField from "./EditableField";
 
 const StyledEditIcon = styled(EditIcon)`
   color: ${(props) => props.theme.colors.listItemIconColor};
@@ -45,6 +47,14 @@ const ParticipantListItemInfoContainer = styled.div`
   padding-bottom: 24px;
 `;
 
+const ParticipantListItemEditContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding-left: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
+
 const ParticipantListItemIconsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -53,28 +63,66 @@ const ParticipantListItemIconsContainer = styled.div`
   padding-right: 24px;
 `;
 
-const ParticipantListItemButtonsContainer = styled.div``;
+const FieldContainerBase = styled.div`
+  -moz-box-sizing: border-box; /* Firefox */
+  -webkit-box-sizing: border-box; /* Safari, Chrome */
+  box-sizing: border-box; /* ie, opera */
+  overflow: hidden;
+  ${(props) => props.edit && "padding-right: 16px;"}
+`;
+
+const NameFieldContainer = styled(FieldContainerBase)`
+  width: ${(props) => props.theme.spacing.nameWidth}px;
+`;
+
+const EmailFieldContainer = styled(FieldContainerBase)`
+  width: ${(props) => props.theme.spacing.emailWidth}px;
+`;
+
+const PhoneFieldContainer = styled(FieldContainerBase)`
+  width: ${(props) => props.theme.spacing.phoneWidth}px;
+`;
+
+// const ParticipantListItemButtonsContainer = styled.div``;
 
 const ParticipantListItem = ({ participant }) => {
-  const [edit] = useState(false);
-  console.log(participant);
+  const [edit, setEdit] = useState(false);
   if (edit) {
     return (
       <ParticipantListItemContainer>
-        <ParticipantListItemInfoContainer></ParticipantListItemInfoContainer>
-        <ParticipantListItemButtonsContainer></ParticipantListItemButtonsContainer>
+        <ParticipantListItemEditContainer>
+          <NameFieldContainer edit>
+            <EditableField />
+          </NameFieldContainer>
+          <EmailFieldContainer edit>
+            <EditableField />
+          </EmailFieldContainer>
+          <PhoneFieldContainer edit>
+            <EditableField />
+          </PhoneFieldContainer>
+        </ParticipantListItemEditContainer>
+        <ParticipantListItemIconsContainer>
+          <CancelButton onClick={() => setEdit(!edit)} />
+          <SaveButton />
+        </ParticipantListItemIconsContainer>
       </ParticipantListItemContainer>
     );
   }
   return (
     <ParticipantListItemContainer>
       <ParticipantListItemInfoContainer>
-        <InfoText>{participant.name}</InfoText>
-        <InfoText>{participant.email}</InfoText>
-        <InfoText>{participant.phone}</InfoText>
+        <NameFieldContainer>
+          <InfoText>{participant.name}</InfoText>
+        </NameFieldContainer>
+        <EmailFieldContainer>
+          <InfoText>{participant.email}</InfoText>
+        </EmailFieldContainer>
+        <PhoneFieldContainer>
+          <InfoText>{participant.phone}</InfoText>
+        </PhoneFieldContainer>
       </ParticipantListItemInfoContainer>
       <ParticipantListItemIconsContainer>
-        <StyledEditIcon />
+        <StyledEditIcon onClick={() => setEdit(!edit)} />
         <StyledDeleteIcon />
       </ParticipantListItemIconsContainer>
     </ParticipantListItemContainer>
