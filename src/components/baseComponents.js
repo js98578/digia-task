@@ -10,8 +10,8 @@ export const ButtonContainerBase = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 35px;
-  padding-right: 35px;
+  padding-left: 20px;
+  padding-right: 20px;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
