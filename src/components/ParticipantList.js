@@ -68,6 +68,9 @@ const FieldContainerBase = styled.div`
   -webkit-box-sizing: border-box; /* Safari, Chrome */
   box-sizing: border-box; /* ie, opera */
   overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   ${(props) => props.edit && "padding-right: 16px;"}
 `;
 
@@ -176,19 +179,26 @@ const ColumnName = styled.div`
   font-size: 14px;
   line-height: 16px;
   font-weight: 500;
+  cursor: pointer;
 `;
 
-const ParticipantList = ({ participants, onSave, remove }) => (
+const ParticipantList = ({ participants, onSave, remove, sort, sortedBy }) => (
   <ParticipantListContainer>
     <ColumnNamesContainer>
       <NameFieldContainer>
-        <ColumnName>Name</ColumnName>
+        <ColumnName onClick={() => sort("name")}>Name</ColumnName>
+        {sortedBy.sortedByField === "name" && sortedBy.ascending && "↓"}
+        {sortedBy.sortedByField === "name" && !sortedBy.ascending && "↑"}
       </NameFieldContainer>
       <EmailFieldContainer>
-        <ColumnName>E-mail address</ColumnName>
+        <ColumnName onClick={() => sort("email")}>E-mail address</ColumnName>
+        {sortedBy.sortedByField === "email" && sortedBy.ascending && "↓"}
+        {sortedBy.sortedByField === "email" && !sortedBy.ascending && "↑"}
       </EmailFieldContainer>
       <PhoneFieldContainer>
-        <ColumnName>Phone number</ColumnName>
+        <ColumnName onClick={() => sort("phone")}>Phone number</ColumnName>
+        {sortedBy.sortedByField === "phone" && sortedBy.ascending && "↓"}
+        {sortedBy.sortedByField === "phone" && !sortedBy.ascending && "↑"}
       </PhoneFieldContainer>
     </ColumnNamesContainer>
     {participants.map((participant) => (
@@ -207,6 +217,7 @@ ParticipantList.propTypes = {
   onSave: PropTypes.func,
   remove: PropTypes.func,
   sort: PropTypes.func,
+  sortedBy: PropTypes.object,
 };
 
 ParticipantListItem.propTypes = {

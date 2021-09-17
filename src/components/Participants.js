@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { uniqueNamesGenerator, names } from "unique-names-generator";
 import validator from "validator";
+import sortArray from "sort-array";
 import { TitleBase } from "./baseComponents";
 import ParticipantList from "./ParticipantList";
 import { getRandomEmail, getRandomPhoneNumber } from "../util/helperFunctions";
@@ -23,6 +24,15 @@ const Title = styled(TitleBase)`
 
 const Participants = () => {
   const [participants, setParticipants] = useState([]);
+  const [sortedBy, setSortedBy] = useState({
+    sortedByField: "name",
+    ascending: true,
+  });
+
+  const alert = () => {
+    // eslint-disable-next-line no-alert
+    alert("Problem on validation");
+  };
 
   useEffect(() => {
     const array = new Array(20);
@@ -34,6 +44,11 @@ const Participants = () => {
       email: getRandomEmail(),
       phone: getRandomPhoneNumber(),
     }));
+    sortArray(participantsArray, {
+      by: "name",
+      order: "asc",
+    });
+    setSortedBy({ sortedByField: "name", ascending: true });
     setParticipants(participantsArray);
   }, []);
 
@@ -44,8 +59,7 @@ const Participants = () => {
     if (isEmail && isNumber) {
       return true;
     }
-    // eslint-disable-next-line no-alert
-    alert("Problem on validation");
+    alert();
     return false;
   };
 
@@ -74,16 +88,42 @@ const Participants = () => {
     });
   };
 
-  const addNewParticipant = (participant) => {
-    // eslint-disable-next-line no-param-reassign
-    participant.id = uuidv4();
-    if (validateParticipant(participant)) {
-      setParticipants((prevState) => [...prevState, participant]);
+  const sort = (column) => {
+    const participantsCopy = JSON.parse(JSON.stringify(participants));
+    let newOrder = "asc";
+
+    if (sortedBy.sortedByField === column && sortedBy.ascending === true) {
+      newOrder = "desc";
     }
+
+    sortArray(participantsCopy, {
+      by: column,
+      order: newOrder,
+    });
+    setParticipants(participantsCopy);
+    if (sortedBy.sortedByField === column) {
+      setSortedBy({ sortedByField: column, ascending: !sortedBy.ascending });
+      return;
+    }
+    setSortedBy({ sortedByField: column, ascending: true });
   };
 
-  const sort = (column) => {
-    console.log(column);
+  const addNewParticipant = (participant) => {
+    if (!validateParticipant(participant)) {
+      alert();
+    }
+    const newParticipant = Object.assign(participant, { id: uuidv4() });
+    const participantsCopy = JSON.parse(JSON.stringify(participants));
+    participantsCopy.push(newParticipant);
+    let order = "asc";
+    if (sortedBy.ascending === false) {
+      order = "desc";
+    }
+    sortArray(participantsCopy, {
+      by: sortedBy.sortedByField,
+      order,
+    });
+    setParticipants(participantsCopy);
   };
 
   return (
@@ -95,6 +135,7 @@ const Participants = () => {
         onSave={onSave}
         remove={removeParticipant}
         sort={sort}
+        sortedBy={sortedBy}
       />
     </Container>
   );
