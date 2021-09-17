@@ -93,10 +93,6 @@ const ParticipantListItemEdit = ({ participant, onSave, cancelEdit }) => {
     setParticipantEditState((prevState) => ({ ...prevState, [field]: value }));
   };
 
-  /*   useEffect(() => {
-    setParticipantEditState(participant);
-  }, []); */
-
   return (
     <ParticipantListItemContainer>
       <ParticipantListItemEditContainer>

@@ -27,8 +27,8 @@ const theme = {
     editableLinePadding: 16,
     listItemIconSize: 24,
     emailWidth: 250,
-    phoneWidth: 150,
-    nameWidth: 150,
+    phoneWidth: 200,
+    nameWidth: 200,
   },
 };
 

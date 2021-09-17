@@ -29,7 +29,7 @@ const Participants = () => {
     ascending: true,
   });
 
-  const alert = () => {
+  const onValidationError = () => {
     // eslint-disable-next-line no-alert
     alert("Problem on validation");
   };
@@ -59,7 +59,7 @@ const Participants = () => {
     if (isEmail && isNumber) {
       return true;
     }
-    alert();
+    onValidationError();
     return false;
   };
 
@@ -110,7 +110,7 @@ const Participants = () => {
 
   const addNewParticipant = (participant) => {
     if (!validateParticipant(participant)) {
-      alert();
+      return;
     }
     const newParticipant = Object.assign(participant, { id: uuidv4() });
     const participantsCopy = JSON.parse(JSON.stringify(participants));
